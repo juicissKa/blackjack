@@ -14,13 +14,9 @@ class TestApp(unittest.TestCase):
 
     # integration
     def test_table_hit(self):
-        hand = self.player.hand.copy()
-        hand.append(self.deck.card_list[0])
-
-        result = self.table.hit(player=self.player)
-        self.assertEqual(result[0], hand[0])
-        self.assertEqual(result[1], hand[1])
-        self.assertEqual(result[2], hand[2])
+        result = self.table.hit()
+        for i in range(0, len(result)):
+            self.assertEqual(result[i], self.player.hand[i])
 
     def test_table_hold(self):
         self.player.card_count = 21

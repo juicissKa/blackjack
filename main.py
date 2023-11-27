@@ -10,7 +10,7 @@ class MyModal(Tk):
         Label(self, text='Дилер').grid()
         Label(self, text=dealer_hand).grid()
         Label(self, text='Игрок').grid()
-        Label(self, text=dealer_hand).grid()
+        Label(self, text=hand).grid()
         Button(self, text='OK', command=self.destroy).grid()
 
 class Table:
@@ -22,8 +22,8 @@ class Table:
         print(self.deck)
         self.__start_game()
 
-    def hit(self, player):
-        player.get_card(self.deck.pop_card())
+    def hit(self):
+        self.player.get_card(self.deck.pop_card())
         if self.player.card_count >= 21:
             self.hold()
         return self.player.hand
@@ -85,7 +85,6 @@ class Player:
             self.ace_count -= 1
             self.card_count -= 10
 
-        print(self.card_count)
         self.hand.append(card)
         self.hand_str.set(", ".join([card.__str__() for card in self.hand]))
 
@@ -172,7 +171,7 @@ class App(Tk):
         Label(text="Игрок").grid()
         Label(textvariable=self.table.player.hand_str).grid()
 
-        self.hit_btn = Button(text="Hit", command=lambda: self.table.hit(self.table.player))
+        self.hit_btn = Button(text="Hit", command=lambda: self.table.hit())
         self.hit_btn.grid()
         self.hold_btn = Button(text="Hold", command=lambda: self.table.hold())
         self.hold_btn.grid()
