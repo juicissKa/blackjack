@@ -21,6 +21,4 @@ jobs:
         run: pip install coverage
 
       - name: Run Tests
-        run: coverage run --source=. -m unittest discover -s . -p "test_*.py"
-      - name: Without input
-        run: coverage report -m --omit "input.py"
+        run: coverage run --source=. -m unittest discover -s . -p "TestApp.py"
