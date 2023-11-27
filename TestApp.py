@@ -6,7 +6,6 @@ import tkinter
 
 class TestApp(unittest.TestCase):
     def setUp(self):
-        self.root = tkinter.Tk()
         self.app = App()
         self.table = self.app.table
         self.player = self.app.table.player
@@ -65,7 +64,6 @@ class TestApp(unittest.TestCase):
 
 class TestPlayer(unittest.TestCase):
         def setUp(self):
-            self.root = tkinter.Tk()
             self.player = Player('Игрок')
 
         def test_get_card_default(self):
@@ -104,7 +102,6 @@ class TestPlayer(unittest.TestCase):
 
 class TestDeck(unittest.TestCase):
     def setUp(self):
-        self.root = tkinter.Tk()
         self.deck = Deck()
 
     def test_initialize_card_list(self):
