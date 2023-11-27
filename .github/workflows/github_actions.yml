@@ -19,6 +19,7 @@ jobs:
           python-version: 3.x
       - name: Coverage
         run: pip install coverage
-
+      - name: Set Display
+        run: export DISPLAY=:0.0
       - name: Run Tests
         run: coverage run --source=. -m unittest discover -s . -p "TestApp.py"
