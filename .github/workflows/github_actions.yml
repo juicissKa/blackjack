@@ -22,5 +22,10 @@ jobs:
       - name: Install Dependencies
         run:
           sudo apt-get install -y xvfb
+      - name: Code Coverage with Coveralls
+        run: coveralls
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          COVERALLS_REPO_TOKEN: ${{ secrets.COVERALLS_REPO_TOKEN }}
       - name: Run Tests
         run: coverage run --source=. -m unittest discover -s . -p "TestApp.py"
