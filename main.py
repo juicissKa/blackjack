@@ -1,3 +1,4 @@
+import os
 import random
 from tkinter import *
 from tkinter.messagebox import showinfo
@@ -178,5 +179,8 @@ class App(Tk):
 
 
 if __name__ == '__main__':
+    if os.name != "nt" and os.getenv("GITHUB_ACTIONS"):
+        os.system('Xvfb :1 -screen 0 1600x1200x16 &')
+        os.environ["DISPLAY"] = ":1.0"
     app = App()
     app.mainloop()
