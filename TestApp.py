@@ -3,9 +3,13 @@ import unittest
 from main import App, Deck, Card, Player, Dealer
 from unittest.mock import patch, Mock
 import tkinter
+import os
 
 class TestApp(unittest.TestCase):
     def setUp(self):
+        if os.name != "nt" and os.getenv("GITHUB_ACTIONS"):
+            os.system('Xvfb :1 -screen 0 1600x1200x16 &')
+            os.environ["DISPLAY"] = ":1.0"
         self.app = App()
         self.table = self.app.table
         self.player = self.app.table.player
