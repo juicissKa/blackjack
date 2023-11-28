@@ -1,4 +1,4 @@
-[![Coverage Status](https://coveralls.io/repos/github/juicissKa/blackjack/badge.svg?branch=main)](https://coveralls.io/github/juicissKa/blackjack?branch=main)]
+[![Coverage Status](https://coveralls.io/repos/github/juicissKa/blackjack/badge.svg?branch=main)](https://coveralls.io/github/juicissKa/blackjack?branch=main)
 [![CI/CD GitHub Actions](https://github.com/Scrooge2727/python-test/actions/workflows/main.yml/badge.svg)](https://github.com/juicissKa/blackjack/actions/workflows/main.yml)
 [![Quality Gate](https://sonarcloud.io/api/project_badges/measure?project=Scrooge2727_python-test&metric=alert_status)](https://sonarcloud.io/dashboard?id=juicissKa_blackjack)
 [![Bugs](https://sonarcloud.io/api/project_badges/measure?project=Scrooge2727_python-test&metric=bugs)](https://sonarcloud.io/summary/new_code?id=juicissKa_blackjack)
