@@ -150,5 +150,8 @@ class CardTest(unittest.TestCase):
     def test_str(self):
         self.assertEqual(self.card.__str__(), 'A ♦')
 
-if __name__ == "__main__":
+    def test_eq(self):
+        self.assertEqual(Card('A', '♦'), Card('A', '♦'))
+
+if __name__ == "__main__": # pragma: no cover
     unittest.main()
