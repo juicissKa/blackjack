@@ -20,34 +20,16 @@ class Table:
         self.player = Player('Игрок 1')
         self.dealer = Dealer()
         self.deck.shuffle()
-        print(self.deck)
         self.__start_game()
-
-    def hit(self):
-        self.player.get_card(self.deck.pop_card())
-        if self.player.card_count >= 21:
-            self.hold()
-        return self.player.hand
-
-    def hold(self):
-        while self.dealer.card_count < 17:
-            self.dealer.get_card(self.deck.pop_card())
-
-        result = self.get_result()
-        self.__restart()
-        return result
 
     def get_result(self):
         if (self.player.card_count > 21
                 or (self.dealer.card_count < 22
                  and self.player.card_count < self.dealer.card_count)):
-            MyModal('Вы проиграли!', self.dealer.hand_str.get(), self.player.hand_str.get())
             return 'lose'
         elif self.dealer.card_count == self.player.card_count:
-            MyModal('Ничья!', self.dealer.hand_str.get(), self.player.hand_str.get())
             return 'draw'
         else:
-            MyModal('Вы выиграли!', self.dealer.hand_str.get(), self.player.hand_str.get())
             return 'win'
 
     def __start_game(self):
@@ -56,7 +38,7 @@ class Table:
         self.dealer.get_card(self.deck.pop_card())
         self.dealer.get_card(self.deck.pop_card())
 
-    def __restart(self):
+    def restart(self):
         self.deck.reset()
         self.player.reset()
         self.dealer.reset()
@@ -71,12 +53,10 @@ class Player:
         self.card_count = 0
         self.ace_count = 0
 
-        self.hand_str = StringVar()
-
     def get_card(self, card):
-        if card.value in ['Валет', 'Дама', 'Король']:
+        if card.value in ['J', 'Q', 'K']:
             self.card_count += 10
-        elif card.value == 'Туз':
+        elif card.value == 'A':
             self.ace_count += 1
             self.card_count += 11
         else:
@@ -87,11 +67,9 @@ class Player:
             self.card_count -= 10
 
         self.hand.append(card)
-        self.hand_str.set(", ".join([card.__str__() for card in self.hand]))
 
     def reset(self):
         self.hand = []
-        self.hand_str.set("")
         self.card_count = 0
         self.ace_count = 0
 
@@ -100,7 +78,7 @@ class Player:
 
 
     def __str__(self):
-        return f"Имя: {self.name}, Рука: {self.hand_str.get()}, Счёт: {self.card_count}"
+        return f"Имя: {self.name}, Рука: {', '.join([card.__str__() for card in self.hand])}, Счёт: {self.card_count}"
 
     def __eq__(self, other):
         return self.name == other.name and self.hand == other.hand
@@ -131,9 +109,9 @@ class Deck:
 
     def initialize_card_list(self):
         return [Card(value=v, suit=s)
-                          for s in ['Черви', 'Вини', 'Крести', 'Буби']
+                          for s in ['♥', '♠', '♣', '♦']
                           for v in [2, 3, 4, 5, 6, 7, 8, 9, 10,
-                                    'Валет', 'Дама', 'Король', 'Туз']]
+                                    'J', 'Q', 'K', 'A']]
 
     def set_card_list(self, card_list):
         self.card_list = card_list
@@ -163,24 +141,46 @@ class Deck:
 
 
 class App(Tk):
+
     def __init__(self):
         super().__init__()
         self.table = Table()
-
+        self.player_hand_str = StringVar()
+        self.dealer_hand_str = StringVar()
+        self.player_hand_str.set(", ".join([card.__str__() for card in self.table.player.hand]))
+        self.dealer_hand_str.set(", ".join([card.__str__() for card in self.table.dealer.hand]))
         Label(text="Дилер").grid()
-        Label(textvariable=self.table.dealer.hand_str).grid()
+        Label(textvariable=self.dealer_hand_str).grid()
         Label(text="Игрок").grid()
-        Label(textvariable=self.table.player.hand_str).grid()
+        Label(textvariable=self.player_hand_str).grid()
 
-        self.hit_btn = Button(text="Hit", command=lambda: self.table.hit())
+        self.hit_btn = Button(text="Hit", command=lambda: self.hit())
         self.hit_btn.grid()
-        self.hold_btn = Button(text="Hold", command=lambda: self.table.hold())
+        self.hold_btn = Button(text="Hold", command=lambda: self.hold())
         self.hold_btn.grid()
+
+    def hit(self):
+        self.table.player.get_card(self.table.deck.pop_card())
+        self.player_hand_str.set(", ".join([card.__str__() for card in self.table.player.hand]))
+        if self.table.player.card_count >= 21:
+            self.hold()
+
+    def hold(self):
+        while self.table.dealer.card_count < 17:
+            self.table.dealer.get_card(self.table.deck.pop_card())
+
+        result = self.table.get_result()
+        if result == 'lose':
+            MyModal('Вы проиграли!', self.dealer_hand_str.get(), self.player_hand_str.get())
+        elif result == 'draw':
+            MyModal('Ничья!', self.dealer_hand_str.get(), self.player_hand_str.get())
+        else:
+            MyModal('Вы победили!', self.dealer_hand_str.get(), self.player_hand_str.get())
+        self.table.restart()
+        self.player_hand_str.set(", ".join([card.__str__() for card in self.table.player.hand]))
+        self.dealer_hand_str.set(", ".join([card.__str__() for card in self.table.dealer.hand]))
 
 
 if __name__ == '__main__':
-    if os.name != "nt" and os.getenv("GITHUB_ACTIONS"):
-        os.system('Xvfb :1 -screen 0 1600x1200x16 &')
-        os.environ["DISPLAY"] = ":1.0"
     app = App()
     app.mainloop()

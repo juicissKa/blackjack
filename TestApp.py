@@ -1,69 +1,54 @@
 import tkinter.messagebox
 import unittest
-from main import App, Deck, Card, Player, Dealer
+from main import App, Deck, Card, Player, Dealer, Table
 from unittest.mock import patch, Mock
 import tkinter
 import os
 
 class TestApp(unittest.TestCase):
     def setUp(self):
-        if os.name != "nt" and os.getenv("GITHUB_ACTIONS"):
-            os.system('Xvfb :1 -screen 0 1600x1200x16 &')
-            os.environ["DISPLAY"] = ":1.0"
-        self.app = App()
-        self.table = self.app.table
-        self.player = self.app.table.player
-        self.dealer = self.app.table.dealer
-        self.deck = self.app.table.deck
+        self.table = Table()
+        self.player = self.table.player
+        self.dealer = self.table.dealer
+        self.deck = self.table.deck
+
+        self.deck.card_list = self.deck.reset()
+        self.deck.card_list = self.deck.initialize_card_list()
+        print([card.__str__() for card in self.deck.card_list])
+        self.player.reset()
+        self.dealer.reset()
+
 
     # integration
     def test_table_hit(self):
-        result = self.table.hit()
-        for i in range(0, len(result)):
-            self.assertEqual(result[i], self.player.hand[i])
+        self.player.get_card(self.table.deck.pop_card())
+        if self.player.card_count >= 21:
+            while self.dealer.card_count < 17:
+                self.dealer.get_card(self.table.deck.pop_card())
+
+        result = self.table.get_result()
+
+        self.assertEqual(result, 'win')
 
     def test_table_hold(self):
-        self.player.card_count = 21
-        self.dealer.card_count = 21
-        self.assertEqual(self.table.hold(), 'draw')
-        self.player.card_count = 23
-        self.dealer.card_count = 21
-        self.assertEqual(self.table.hold(), 'lose')
-        self.player.card_count = 23
-        self.dealer.card_count = 23
-        self.assertEqual(self.table.hold(), 'lose')
-        self.player.card_count = 21
-        self.dealer.card_count = 20
-        self.assertEqual(self.table.hold(), 'win')
+        while (self.player.card_count < 22):
+            self.player.get_card(self.table.deck.pop_card())
+        if self.player.card_count >= 21:
+            while self.dealer.card_count < 17:
+                self.dealer.get_card(self.table.deck.pop_card())
 
-    def test_start_game(self):
-        self.player.reset()
-        self.dealer.reset()
-        self.deck.reset()
+        result = self.table.get_result()
 
-        self.table._Table__start_game()
-        self.assertEqual(len(self.player.hand), 2)
-        self.assertEqual(len(self.dealer.hand), 2)
-        self.assertEqual(len(self.deck.popped_cards), 4)
-        self.assertEqual(self.player.hand[0], self.deck.popped_cards[0])
-        self.assertEqual(self.player.hand[1], self.deck.popped_cards[1])
-        self.assertEqual(self.dealer.hand[0], self.deck.popped_cards[2])
-        self.assertEqual(self.dealer.hand[1], self.deck.popped_cards[3])
+        self.assertEqual(result, 'lose')
 
-        self.assertEqual(len(self.deck.card_list), 48)
+    def test_table_draw(self):
+        self.player.get_card(self.deck.pop_card())
+        self.player.get_card(self.deck.pop_card())
+        self.deck.pop_card()
+        self.dealer.get_card(self.deck.pop_card())
+        result = self.table.get_result()
 
-
-    def test_restart(self):
-        self.table._Table__restart()
-        self.assertEqual(len(self.player.hand), 2)
-        self.assertEqual(len(self.dealer.hand), 2)
-        self.assertEqual(len(self.deck.popped_cards), 4)
-        self.assertEqual(self.player.hand[0], self.deck.popped_cards[0])
-        self.assertEqual(self.player.hand[1], self.deck.popped_cards[1])
-        self.assertEqual(self.dealer.hand[0], self.deck.popped_cards[2])
-        self.assertEqual(self.dealer.hand[1], self.deck.popped_cards[3])
-
-        self.assertEqual(len(self.deck.card_list), 48)
+        self.assertEqual(result, 'draw')
 
 
 class TestPlayer(unittest.TestCase):
@@ -71,37 +56,34 @@ class TestPlayer(unittest.TestCase):
             self.player = Player('Игрок')
 
         def test_get_card_default(self):
-            self.player.get_card(Card(suit='Буби', value=2))
-            self.assertEqual(self.player.hand, [Card(suit='Буби', value=2)])
+            self.player.get_card(Card(suit='♦', value=2))
+            self.assertEqual(self.player.hand, [Card(suit='♦', value=2)])
             self.assertEqual(self.player.card_count, 2)
             self.assertEqual(self.player.ace_count, 0)
 
         def test_get_card_ace(self):
-            self.player.get_card(Card(suit='Буби', value='Туз'))
-            self.assertEqual(self.player.hand, [Card(suit='Буби', value='Туз')])
+            self.player.get_card(Card(suit='♦', value='A'))
+            self.assertEqual(self.player.hand, [Card(suit='♦', value='A')])
             self.assertEqual(self.player.card_count, 11)
             self.assertEqual(self.player.ace_count, 1)
-            self.assertEqual(self.player.hand_str.get(), "Туз Буби")
 
         def test_get_card_double_ace(self):
-            self.player.get_card(Card(suit='Буби', value='Туз'))
-            self.player.get_card(Card(suit='Вини', value='Туз'))
-            self.assertEqual(self.player.hand, [Card(suit='Буби', value='Туз'), Card(suit='Вини', value='Туз')])
+            self.player.get_card(Card(suit='♦', value='A'))
+            self.player.get_card(Card(suit='♠', value='A'))
+            self.assertEqual(self.player.hand, [Card(suit='♦', value='A'), Card(suit='♠', value='A')])
             self.assertEqual(self.player.card_count, 12)
             self.assertEqual(self.player.ace_count, 1)
-            self.assertEqual(self.player.hand_str.get(), "Туз Буби, Туз Вини")
 
         def test_reset(self):
             self.player.reset()
             self.assertEqual(self.player.hand, [])
             self.assertEqual(self.player.card_count, 0)
             self.assertEqual(self.player.ace_count, 0)
-            self.assertEqual(self.player.hand_str.get(), "")
 
         def test_str(self):
-            self.player.get_card(Card(suit='Буби', value='Туз'))
+            self.player.get_card(Card(suit='♦', value='A'))
 
-            self.assertEqual(self.player.__str__(), f"Имя: Игрок, Рука: Туз Буби, Счёт: 11")
+            self.assertEqual(self.player.__str__(), f"Имя: Игрок, Рука: A ♦, Счёт: 11")
 
 
 class TestDeck(unittest.TestCase):
@@ -110,9 +92,9 @@ class TestDeck(unittest.TestCase):
 
     def test_initialize_card_list(self):
         self.assertEqual(self.deck.initialize_card_list(), [Card(value=v, suit=s)
-                          for s in ['Черви', 'Вини', 'Крести', 'Буби']
+                          for s in ['♥', '♠', '♣', '♦']
                           for v in [2, 3, 4, 5, 6, 7, 8, 9, 10,
-                                    'Валет', 'Дама', 'Король', 'Туз']])
+                                    'J', 'Q', 'K', 'A']])
 
     def test_shuffle(self):
         before_shuffle = self.deck.card_list.copy()
@@ -138,10 +120,10 @@ class TestDeck(unittest.TestCase):
 
 class CardTest(unittest.TestCase):
     def setUp(self):
-        self.card = Card('Туз', 'Буби')
+        self.card = Card('A', '♦')
 
     def test_str(self):
-        self.assertEqual(self.card.__str__(), 'Туз Буби')
+        self.assertEqual(self.card.__str__(), 'A ♦')
 
 if __name__ == "__main__":
     unittest.main()

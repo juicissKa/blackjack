@@ -46,8 +46,8 @@
     	<li>
     	  <h4>Тест Б1.1 (положительный)</h4>
     	  <ul>
-    	    <li>Входные данные: Card(suit='Буби', value='Туз')</li>
-    	    <li>Ожидаемый результат: 'Туз Буби'</li>
+    	    <li>Входные данные: Card(suit='♦', value='A')</li>
+    	    <li>Ожидаемый результат: 'A ♦'</li>
     	  </ul>
     	</li>
     </ol>
@@ -58,21 +58,21 @@
     	<li>
     	  <h4>Тест Б1.2 (положительный)</h4>
     	  <ul>
-    	    <li>Входные данные: Card(suit='Буби', value='Туз'), Card(suit='Буби', value='Туз')</li>
+    	    <li>Входные данные: Card(suit='♦', value='A'), Card(suit='♦', value='A')</li>
     	    <li>Ожидаемый результат: True</li>
     	  </ul>
     	</li>
         <li>
     	  <h4>Тест Б1.3 (негативный)</h4>
     	  <ul>
-    	    <li>Входные данные: Card(suit='Буби', value='Туз'), Card(suit='Вини', value='Туз')</li>
+    	    <li>Входные данные: Card(suit='♦', value='A'), Card(suit='♠', value='A')</li>
     	    <li>Ожидаемый результат: False</li>
     	  </ul>
     	</li>
         <li>
     	  <h4>Тест Б1.3 (негативный)</h4>
     	  <ul>
-    	    <li>Входные данные: Card(suit='Буби', value='Туз'), Card(suit='Буби', value='Король')</li>
+    	    <li>Входные данные: Card(suit='♦', value='A'), Card(suit='♦', value='K')</li>
     	    <li>Ожидаемый результат: False</li>
     	  </ul>
     	</li>
@@ -151,22 +151,22 @@
     	<li>
     	  <h4>Тест Б3.1 (положительный)</h4>
     	  <ul>
-            <li>Входные данные: self.hand = [], self.hand_str.get() = "", self.card_count = 0, self.ace_count = 0, card = Card(suit='Буби', value='Туз')</li>
-    	    <li>Ожидаемый результат: self.hand = [Card(suit='Буби', value='Туз')], self.hand_str.get() = "Туз Буби", self.card_count = 11, self.ace_count = 1</li>
+            <li>Входные данные: self.hand = [], self.hand_str.get() = "", self.card_count = 0, self.ace_count = 0, card = Card(suit='♦', value='A')</li>
+    	    <li>Ожидаемый результат: self.hand = [Card(suit='♦', value='A')], self.hand_str.get() = "A ♦", self.card_count = 11, self.ace_count = 1</li>
     	  </ul>
     	</li>
     	<li>
     	  <h4>Тест Б3.2 (положительный)</h4>
     	  <ul>
-            <li>Входные данные: self.hand = [Card(suit='Буби', value='Туз')], self.hand_str.get() = "Туз Буби", self.card_count = 11, self.ace_count = 1, card = Card(suit='Вини', value='Туз')</li>
-    	    <li>Ожидаемый результат: self.hand = [Card(suit='Буби', value='Туз')], self.hand_str.get() = "Туз Буби, Туз Вини", self.card_count = 12, self.ace_count = 1</li>
+            <li>Входные данные: self.hand = [Card(suit='♦', value='A')], self.hand_str.get() = "A ♦", self.card_count = 11, self.ace_count = 1, card = Card(suit='♠', value='A')</li>
+    	    <li>Ожидаемый результат: self.hand = [Card(suit='♦', value='A')], self.hand_str.get() = "A ♦, A ♠", self.card_count = 12, self.ace_count = 1</li>
     	  </ul>
     	</li>
     	<li>
     	  <h4>Тест Б3.3 (положительный)</h4>
     	  <ul>
-            <li>Входные данные: self.hand = [Card(suit='Буби', value='Туз'), Card(suit='Буби', value='Король')], self.hand_str.get() = "Туз Буби, Король Буби", self.card_count = 21, self.ace_count = 1, card = Card(suit='Вини', value='Туз')</li>
-    	    <li>Ожидаемый результат: self.hand = [Card(suit='Буби', value='Туз'), Card(suit='Буби', value='Король'), Card(suit='Вини', value='Туз'], self.hand_str.get() = "Туз Буби, Король Буби, Туз Вини", self.card_count = 12, self.ace_count = 0</li>
+            <li>Входные данные: self.hand = [Card(suit='♦', value='A'), Card(suit='♦', value='K')], self.hand_str.get() = "A ♦, K ♦", self.card_count = 21, self.ace_count = 1, card = Card(suit='♠', value='A')</li>
+    	    <li>Ожидаемый результат: self.hand = [Card(suit='♦', value='A'), Card(suit='♦', value='K'), Card(suit='♠', value='A'], self.hand_str.get() = "A ♦, K ♦, A ♠", self.card_count = 12, self.ace_count = 0</li>
     	  </ul>
     	</li>
     </ol>
@@ -188,8 +188,8 @@
     	<li>
     	  <h4>Тест Б1.1 (положительный)</h4>
     	  <ul>
-    	    <li>Входные данные: self.card_list = [Card(suit='Буби', value='Туз')], self.name = 'Игрок', self.card_count = 11</li>
-    	    <li>Ожидаемый результат: "Имя: Игрок, Рука: Туз Буби, Счёт: 11" </li>
+    	    <li>Входные данные: self.card_list = [Card(suit='♦', value='A')], self.name = 'Игрок', self.card_count = 11</li>
+    	    <li>Ожидаемый результат: "Имя: Игрок, Рука: A ♦, Счёт: 11" </li>
     	  </ul>
     	</li>
     </ol>
@@ -203,7 +203,7 @@
     <ul>
       <li>Методы: Table.hit(), Player.get_card(Card card), Table.hold(), Table.get_result(), Table.__restart(), Table.__start()</li>
       <li>Описание: Перебор карт при нажатии на кнопку "Hit" </li>
-      <li>Входные данные: player = Player(), player.hand = [Card(suit='Буби', value='Дама'), Card(suit='Буби', value='Валет')], card = Card(suit='Буби', value='Король'), card_count = 20</li>
+      <li>Входные данные: player = Player(), player.hand = [Card(suit='♦', value='Q'), Card(suit='♦', value='J')], card = Card(suit='♦', value='K'), card_count = 20</li>
       <li>Ожидаемый результат: 'lose'</li>
     </ul>	
   </li>
@@ -212,7 +212,7 @@
     <ul>
       <li>Методы: Table.hold(), Dealer.get_card(Card card), Table.hold(), Table.get_result(), Table.__restart(), Table.__start()</li>
       <li>Описание: Нажатие на кнопку 'Hold' с 21 очком </li>
-      <li>Входные данные: dealer = Dealer([Card(suit='Буби', value='Дама'), Card(suit='Буби', value='Семь')]), dealer.hand = [] player = Player(), player.hand = [Card(suit='Буби', value='Дама'), Card(suit='Буби', value='Туз')], player.card_count = 21</li>
+      <li>Входные данные: dealer = Dealer([Card(suit='♦', value='Q'), Card(suit='♦', value='Семь')]), dealer.hand = [] player = Player(), player.hand = [Card(suit='♦', value='Q'), Card(suit='♦', value='A')], player.card_count = 21</li>
       <li>Ожидаемый результат: 'win'</li>
     </ul>	
   </li>
