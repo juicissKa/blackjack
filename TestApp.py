@@ -50,6 +50,42 @@ class TestApp(unittest.TestCase):
 
         self.assertEqual(result, 'draw')
 
+class TestTable(unittest.TestCase):
+    def setUp(self):
+        self.table = Table()
+        self.player = self.table.player
+        self.dealer = self.table.dealer
+
+    def test_get_result(self):
+        self.player.card_count = 21
+        self.dealer.card_count = 21
+        self.assertEqual(self.table.get_result(), 'draw')
+
+        self.player.card_count = 21
+        self.dealer.card_count = 20
+        self.assertEqual(self.table.get_result(), 'win')
+
+        self.player.card_count = 20
+        self.dealer.card_count = 21
+        self.assertEqual(self.table.get_result(), 'lose')
+
+        self.player.card_count = 22
+        self.dealer.card_count = 22
+        self.assertEqual(self.table.get_result(), 'lose')
+
+    def test_start_game(self):
+        self.player.reset()
+        self.dealer.reset()
+
+        self.table._Table__start_game()
+        self.assertEqual(len(self.player.hand), 2)
+        self.assertEqual(len(self.dealer.hand), 2)
+
+    def test_restart(self):
+        self.table.restart()
+
+        self.assertEqual(len(self.player.hand), 2)
+        self.assertEqual(len(self.dealer.hand), 2)
 
 class TestPlayer(unittest.TestCase):
         def setUp(self):
