@@ -21,25 +21,14 @@ class TestApp(unittest.TestCase):
 
     # integration
     def test_table_hit(self):
-        self.player.get_card(self.table.deck.pop_card())
-        if self.player.card_count >= 21:
-            while self.dealer.card_count < 17:
-                self.dealer.get_card(self.table.deck.pop_card())
-
-        result = self.table.get_result()
-
-        self.assertEqual(result, 'win')
+        self.table.hit()
+        self.assertEqual(len(self.player.hand), 1)
+        self.assertEqual(self.deck.popped_cards[0], self.player.hand[0])
 
     def test_table_hold(self):
-        while (self.player.card_count < 22):
-            self.player.get_card(self.table.deck.pop_card())
-        if self.player.card_count >= 21:
-            while self.dealer.card_count < 17:
-                self.dealer.get_card(self.table.deck.pop_card())
-
-        result = self.table.get_result()
-
-        self.assertEqual(result, 'lose')
+        self.table.hold()
+        self.assertGreaterEqual(self.dealer.card_count, 17)
+        self.assertEqual(len(self.dealer.hand), len(self.deck.popped_cards))
 
     def test_table_draw(self):
         self.player.get_card(self.deck.pop_card())

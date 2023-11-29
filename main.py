@@ -45,6 +45,15 @@ class Table:
 
         self.__start_game()
 
+    def hit(self):
+        self.player.get_card(self.deck.pop_card())
+
+    def hold(self):
+        while self.dealer.card_count < 17:
+            self.dealer.get_card(self.deck.pop_card())
+
+        return self.get_result()
+
 
 class Player:
     def __init__(self, name):
@@ -73,8 +82,6 @@ class Player:
         self.card_count = 0
         self.ace_count = 0
 
-    def _protected(self):
-        return 2+2
 
 
     def __str__(self):
@@ -160,16 +167,16 @@ class App(Tk):
         self.hold_btn.grid()
 
     def hit(self):
-        self.table.player.get_card(self.table.deck.pop_card())
+        self.table.hit()
         self.player_hand_str.set(", ".join([card.__str__() for card in self.table.player.hand]))
         if self.table.player.card_count >= 21:
             self.hold()
 
-    def hold(self):
-        while self.table.dealer.card_count < 17:
-            self.table.dealer.get_card(self.table.deck.pop_card())
 
-        result = self.table.get_result()
+    def hold(self):
+        result = self.table.hold()
+        self.dealer_hand_str.set(", ".join([card.__str__() for card in self.table.dealer.hand]))
+
         if result == 'lose':
             MyModal('Вы проиграли!', self.dealer_hand_str.get(), self.player_hand_str.get())
         elif result == 'draw':
