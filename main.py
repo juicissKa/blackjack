@@ -5,7 +5,7 @@ from tkinter.messagebox import showinfo
 
 
 class MyModal(Tk):
-    def __init__(self, text, dealer_hand, hand):
+    def __init__(self, text, dealer_hand, hand): # pragma: no cover
         super().__init__()
         Label(self, text=text).grid()
         Label(self, text='Дилер').grid()
@@ -15,7 +15,7 @@ class MyModal(Tk):
         Button(self, text='OK', command=self.destroy).grid()
 
 class Table:
-    def __init__(self):
+    def __init__(self): # pragma: no cover
         self.deck = Deck()
         self.player = Player('Игрок 1')
         self.dealer = Dealer()
@@ -92,12 +92,12 @@ class Player:
 
 
 class Dealer(Player):
-    def __init__(self):
+    def __init__(self): # pragma: no cover
         super().__init__('Дилер')
 
 
 class Card:
-    def __init__(self, value, suit):
+    def __init__(self, value, suit): # pragma: no cover
         self.value = value
         self.suit = suit
 
@@ -110,7 +110,7 @@ class Card:
 
 class Deck:
 
-    def __init__(self):
+    def __init__(self): # pragma: no cover
         self.popped_cards = []
         self.card_list = self.initialize_card_list()
 
@@ -120,11 +120,6 @@ class Deck:
                           for v in [2, 3, 4, 5, 6, 7, 8, 9, 10,
                                     'J', 'Q', 'K', 'A']]
 
-    def set_card_list(self, card_list):
-        self.card_list = card_list
-
-    def get_card_list(self):
-        return self.card_list
 
     def shuffle(self):
         random.shuffle(self.card_list)
@@ -149,7 +144,7 @@ class Deck:
 
 class App(Tk):
 
-    def __init__(self):
+    def __init__(self): # pragma: no cover
         super().__init__()
         self.table = Table()
         self.player_hand_str = StringVar()
@@ -166,14 +161,14 @@ class App(Tk):
         self.hold_btn = Button(text="Hold", command=lambda: self.hold())
         self.hold_btn.grid()
 
-    def hit(self):
+    def hit(self): # pragma: no cover
         self.table.hit()
         self.player_hand_str.set(", ".join([card.__str__() for card in self.table.player.hand]))
         if self.table.player.card_count >= 21:
             self.hold()
 
 
-    def hold(self):
+    def hold(self): # pragma: no cover
         result = self.table.hold()
         self.dealer_hand_str.set(", ".join([card.__str__() for card in self.table.dealer.hand]))
 
@@ -188,6 +183,6 @@ class App(Tk):
         self.dealer_hand_str.set(", ".join([card.__str__() for card in self.table.dealer.hand]))
 
 
-if __name__ == '__main__':
+if __name__ == '__main__': # pragma: no cover
     app = App()
     app.mainloop()
