@@ -86,10 +86,7 @@ class Player:
 
     def __str__(self):
         return f"Имя: {self.name}, Рука: {', '.join([card.__str__() for card in self.hand])}, Счёт: {self.card_count}"
-
-    def __eq__(self, other):
-        return self.name == other.name and self.hand == other.hand
-
+    
 
 class Dealer(Player):
     def __init__(self): # pragma: no cover
