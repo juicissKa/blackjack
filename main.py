@@ -1,7 +1,5 @@
-import os
 import random
 from tkinter import *
-from tkinter.messagebox import showinfo
 
 
 class MyModal(Tk):
@@ -117,7 +115,6 @@ class Deck:
                           for v in [2, 3, 4, 5, 6, 7, 8, 9, 10,
                                     'J', 'Q', 'K', 'A']]
 
-
     def shuffle(self):
         random.shuffle(self.card_list)
         return self.card_list
@@ -138,7 +135,7 @@ class Deck:
 
 class App(Tk):
 
-    def __init__(self): # pragma: no cover
+    def __init__(self):  # pragma: no cover
         super().__init__()
         self.table = Table()
         self.player_hand_str = StringVar()
@@ -155,14 +152,13 @@ class App(Tk):
         self.hold_btn = Button(text="Hold", command=lambda: self.hold())
         self.hold_btn.grid()
 
-    def hit(self): # pragma: no cover
+    def hit(self):  # pragma: no cover
         self.table.hit()
         self.player_hand_str.set(", ".join([card.__str__() for card in self.table.player.hand]))
         if self.table.player.card_count >= 21:
             self.hold()
 
-
-    def hold(self): # pragma: no cover
+    def hold(self):  # pragma: no cover
         result = self.table.hold()
         self.dealer_hand_str.set(", ".join([card.__str__() for card in self.table.dealer.hand]))
 

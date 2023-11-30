@@ -203,7 +203,13 @@
     <ul>
       <li>Методы: Table.hit(), Player.get_card(Card card), Table.hold(), Table.get_result(), Table.__restart(), Table.__start()</li>
       <li>Описание: Перебор карт при нажатии на кнопку "Hit" </li>
-      <li>Входные данные: player = Player(), player.hand = [Card(suit='♦', value='Q'), Card(suit='♦', value='J')], card = Card(suit='♦', value='K'), card_count = 20</li>
+      <li>Входные данные: 
+            player = Player(),
+            player.hand = [Card(suit='♦', value='Q'),
+            Card(suit='♦', value='J')],
+            card = Card(suit='♦', value='K'),
+            card_count = 20
+      </li>
       <li>Ожидаемый результат: 'lose'</li>
     </ul>	
   </li>

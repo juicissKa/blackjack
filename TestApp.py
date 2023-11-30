@@ -5,6 +5,7 @@ from unittest.mock import patch, Mock
 import tkinter
 import os
 
+
 class TestApp(unittest.TestCase):
     def setUp(self):
         self.table = Table()
@@ -17,7 +18,6 @@ class TestApp(unittest.TestCase):
         print([card.__str__() for card in self.deck.card_list])
         self.player.reset()
         self.dealer.reset()
-
 
     # integration
     def test_table_hit(self):
@@ -153,5 +153,6 @@ class CardTest(unittest.TestCase):
     def test_eq(self):
         self.assertEqual(Card('A', '♦'), Card('A', '♦'))
 
-if __name__ == "__main__": # pragma: no cover
+
+if __name__ == "__main__":  # pragma: no cover
     unittest.main()
