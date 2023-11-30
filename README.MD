@@ -3,6 +3,7 @@
 [![Quality Gate](https://sonarcloud.io/api/project_badges/measure?project=Scrooge2727_python-test&metric=alert_status)](https://sonarcloud.io/dashboard?id=juicissKa_blackjack)
 [![Bugs](https://sonarcloud.io/api/project_badges/measure?project=Scrooge2727_python-test&metric=bugs)](https://sonarcloud.io/summary/new_code?id=juicissKa_blackjack)
 [![Code smells](https://sonarcloud.io/api/project_badges/measure?project=Scrooge2727_python-test&metric=code_smells)](https://sonarcloud.io/dashboard?id=juicissKa_blackjack)
+
 # План тестирования:
 
 # Аттестационное тестирование
